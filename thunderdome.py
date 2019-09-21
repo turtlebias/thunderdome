@@ -63,7 +63,6 @@ def start():
     PlayerIG = Player(option)
     start1()
 
-
 def start1():
     os.system('cls')
     print("Name: {0}".format(PlayerIG.name))

@@ -6,6 +6,7 @@ import pickle
 import socket
 
 weapons = {"Great Sword":40}
+weapons = {"Knight's Sword":100}
 
 class Player:
     def __init__(self, name):
@@ -26,6 +27,9 @@ class Player:
 
         if self.curweap == "Great Sword":
             attack += 15
+
+        if self.curweap == "Knight's Sword":
+            attack += 25
 
         return attack
 class Goblin:
@@ -266,6 +270,7 @@ def store():
     print("Welcome to the shop!")
     print("\nWhat would you like to buy?\n")
     print("1.) Great Sword")
+    print("2.) Knight's Sword")
     print("b.) Back")
     print("  ")
     option = input("---> ")
@@ -301,7 +306,7 @@ def Mp_Format(name, health):
     print("1.) Attack")
     mpinput = input("---> ")
     if mpinput != "1":
-        Mp_Format(name,health)
+        Mp_Format(name, health)
     else:
         return mpinput
 def Mp_Main():

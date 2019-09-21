@@ -3,6 +3,7 @@ import os
 import time
 import random
 import pickle
+import socket
 
 weapons = {"Great Sword":40}
 
@@ -105,6 +106,7 @@ def start1():
     print("3.) Save")
     print("4.) Exit")
     print("5.) Inventory")
+    print("6.) Multiplayer Duels")
     option = input("--> ")
     if option == "1":
         prefight()
@@ -121,6 +123,8 @@ def start1():
         sys.exit()
     elif option == "5":
         inventory()
+    elif option == "6":
+        Mp_Main()
     else:
         start1()
 
@@ -290,6 +294,60 @@ def store():
         option = input("---> ")
         store()
 
+def Mp_Format(name, health):
+    print("{0}      vs.      {1}".format(PlayerIG.name, name))
+    print("{0}'s Health: {1}".format(PlayerIG.name, PlayerIG.health))
+    print("{0}'s Health: {1}".format(name, health))
+    print("1.) Attack")
+    mpinput = input("---> ")
+    if mpinput != "1":
+        Mp_Format(name,health)
+    else:
+        return mpinput
+def Mp_Main():
+    host = '192.168.1.108'
+    port = 7890
+
+    s = socket.socket
+    s.connect((host, port))
+    print("Waiting for another player to connect..")
+    PlayerObj = pickle.dumps(PlayerIG)
+    s.send(PlayerObj)
+    Enemy = s.recv(1024)
+    Enemy = pickle.loads(Enemy)
+
+    while True:
+        mpinput = Mp_Format(Enemy.name, Enemy.health)
+        s.send(mpinput.encode())
+        print("Waiting for another player to respond..")
+        Damage = s.recv(1024)
+        Damage = pickle.loads(Damage)
+        Damage_Dealt(PlayerIG.health - Damage[0], Enemy.health-Damage[2], Enemy.name)
+        PlayerIG.health = Damage[0]
+        Enemy.health = Damage[1]
+        if Damage[2] != 0:
+            if Damage[2] == 1:
+                mpwin(Enemy.name, s)
+            elif Damage[2] == 2:
+                mplose(Enemy.name, s)
 
 
-main()
+def Damage_Dealt(x, y, name):
+    print("You took %i damage." % x)
+    print("You deal %i damage to %s." % (y, name))
+    option = input("---> ")
+
+def mpwin(name, s):
+    print("You have defeated %s !" % name)
+    option = input("---> ")
+    s.close()
+    start1()
+
+def mplose(name, s):
+    print("You have been defeated by %s." % name)
+    option = input("---> ")
+    s.close()
+    start1()
+
+if __name__ == "__main__":
+    main()

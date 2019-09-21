@@ -2,16 +2,31 @@ import sys
 import os
 import time
 import random
+import pickle
+
+weapons = {"Great Sword":40}
 
 class Player:
     def __init__(self, name):
         self.name = name
         self.maxhealth = 100
         self.health = self.maxhealth
-        self.attack = 10
-        self.gold = 0
+        self.base_attack = 10
+        self.gold = 40
         self.pots = 0
+        self.weap = ["Rusty Sword"]
+        self.curweap = ["Rusty Sword"]
 
+    @property
+    def attack(self):
+        attack = self.base_attack
+        if self.curweap == "Rusty Sword":
+            attack += 5
+
+        if self.curweap == "Great Sword":
+            attack += 15
+
+        return attack
 class Goblin:
     def __init__(self, name):
         self.name = name
@@ -49,7 +64,20 @@ def main():
     if option == "1":
         start()
     elif option == "2":
-        pass
+        if os.path.exists("savefile") == True:
+            os.system('cls')
+            with open('savefile', 'rb') as f:
+                global PlayerIG
+                PlayerIG = pickle.load(f)
+            print("Loaded Save State!")
+            option = input("---> ")
+            start1()
+        else:
+            print("You have no current saves.")
+            option = input("---> ")
+            main()
+
+
     elif option == "3":
         sys.exit()
     else:
@@ -68,6 +96,7 @@ def start1():
     print("Name: {0}".format(PlayerIG.name))
     print("Attack: {0} ".format(PlayerIG.attack))
     print("Gold: %d" % PlayerIG.gold)
+    print("Current Weapon: {0}".format(PlayerIG.curweap))
     print("Potions: %d" % PlayerIG.pots)
     print("Health: %i /" % PlayerIG.health, PlayerIG.maxhealth)
     print("\n")
@@ -75,17 +104,56 @@ def start1():
     print("2.) Store")
     print("3.) Save")
     print("4.) Exit")
+    print("5.) Inventory")
     option = input("--> ")
     if option == "1":
         prefight()
     elif option == "2":
         store()
     elif option == "3":
-        pass
+        os.system('cls')
+        with open('savefile', 'wb') as f:
+            pickle.dump(PlayerIG, f)
+            print("\nThe game has been successfully saved!\n")
+        option = input("---> ")
+        start1()
     elif option == "4":
         sys.exit()
+    elif option == "5":
+        inventory()
     else:
         start1()
+
+def inventory():
+    os.system('cls')
+    print("What do you wish to do?")
+    print("1.) Equip Weapon")
+    print("b.) Back")
+    option = input("---> ")
+    if option == "1":
+        equip()
+    elif option == "b":
+        start1()
+
+def equip():
+    print("What do you want to equip?")
+    for weapon in PlayerIG.weap:
+        print(weapon)
+    print("b.) Back")
+    option = input("---> ")
+    if option == PlayerIG.curweap:
+        print("Item is already equipped.")
+        option = input("---> ")
+        equip()
+    elif option == "b":
+        inventory()
+    elif option in PlayerIG.weap:
+        PlayerIG.curweap = option
+        print("You have equipped: {0}".format(option))
+        option = input("---> ")
+        equip()
+    else:
+        print("You do not own this weapon.")
 
 def prefight():
     global enemy
@@ -190,7 +258,38 @@ def die():
     option = input("---> ")
 
 def store():
-    pass
+    os.system('cls')
+    print("Welcome to the shop!")
+    print("\nWhat would you like to buy?\n")
+    print("1.) Great Sword")
+    print("b.) Back")
+    print("  ")
+    option = input("---> ")
+
+    if option in weapons:
+        if PlayerIG.gold >= weapons[option]:
+            os.system('cls')
+            PlayerIG.gold -= weapons[option]
+            PlayerIG.weap.append(option)
+            print("You have purchased the {0} !".format(option))
+            option = input("---> ")
+            store()
+
+        else:
+            os.system('cls')
+            print("You don't have enough gold for this item.")
+            option = input("---> ")
+            store()
+
+    elif option == "Back":
+        start1()
+
+    else:
+        os.system('cls')
+        print("We don't have that item in stock at the moment!")
+        option = input("---> ")
+        store()
+
 
 
 main()

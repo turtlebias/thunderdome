@@ -6,7 +6,7 @@ import pickle
 import socket
 
 
-weapons = {"Great Sword":40, "Knight's Sword":100, "Demon Slayer":200}
+weapons = {"Great Sword":40, "Knight's Sword":100, "Demon Slayer":200, "Angel's Scythe":350, "Homing Bow":300}
 
 
 class Player:
@@ -31,6 +31,16 @@ class Player:
 
         if self.curweap == "Knight's Sword":
             attack += 25
+
+        if self.curweap == "Demon Slayer":
+            attack += 35
+
+        if self.curweap == "Angel's Scythe":
+            attack += 45
+
+        if self.curweap == "Homing Bow":
+            attack += 30
+
 
         return attack
 
@@ -291,6 +301,8 @@ def store():
     print("1.) Great Sword")
     print("2.) Knight's Sword")
     print("3.) Demon Slayer")
+    print("4.) Angel's Scythe")
+    print("5.) Homing Bow")
     print("\nPotions\n")
     print("1.) Health Potion")
     print("b.) Back")

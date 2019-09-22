@@ -8,6 +8,7 @@ import socket
 weapons = {"Great Sword":40}
 weapons = {"Knight's Sword":100}
 
+
 class Player:
     def __init__(self, name):
         self.name = name
@@ -15,7 +16,7 @@ class Player:
         self.health = self.maxhealth
         self.base_attack = 10
         self.gold = 40
-        self.pots = 0
+        self.pots = 3
         self.weap = ["Rusty Sword"]
         self.curweap = ["Rusty Sword"]
 
@@ -32,6 +33,9 @@ class Player:
             attack += 25
 
         return attack
+
+
+
 class Goblin:
     def __init__(self, name):
         self.name = name
@@ -221,8 +225,10 @@ def drinkpot():
     os.system('cls')
     if PlayerIG.pots == 0:
         print("You don't have any potions!")
-    else:
-        PlayerIG.heatlh += 50
+        option = input("---> ")
+        fight()
+    if PlayerIG.pots >= 1:
+        PlayerIG.health += 50
         if PlayerIG.health > PlayerIG.maxhealth:
             PlayerIG.health = PlayerIG.maxhealth
         print("You drank a potion!")
@@ -271,6 +277,8 @@ def store():
     print("\nWhat would you like to buy?\n")
     print("1.) Great Sword")
     print("2.) Knight's Sword")
+    print("\nPotions\n")
+    print("1.) Health Potion")
     print("b.) Back")
     print("  ")
     option = input("---> ")
@@ -287,6 +295,14 @@ def store():
         else:
             os.system('cls')
             print("You don't have enough gold for this item.")
+            option = input("---> ")
+            store()
+    if option == "Health Potion":
+        if PlayerIG.gold >= 40:
+            os.system('cls')
+            PlayerIG.gold -= 40
+            PlayerIG.pots += 1
+            print("You have purchased a {0} !".format(option))
             option = input("---> ")
             store()
 

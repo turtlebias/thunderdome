@@ -36,11 +36,14 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.thethunderdome">
+  <component name="RunManager" selected="Python.thunderdome">
     <configuration name="Thunderdome" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Thunderdome" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="C:\Users\logan\AppData\Local\Programs\Python\Python37-32\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/.." />
       <option name="IS_MODULE_SDK" value="false" />

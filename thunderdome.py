@@ -5,8 +5,8 @@ import random
 import pickle
 import socket
 
-weapons = {"Great Sword":40}
-weapons = {"Knight's Sword":100}
+
+weapons = {"Great Sword":40, "Knight's Sword":100}
 
 
 class Player:
@@ -62,6 +62,15 @@ class Demon:
         self.attack = 10
         self.goldgain = 20
 Demon = Demon("Demon")
+
+class Rouge:
+    def __init__(self, name):
+        self.name = name
+        self.maxhealth = 100
+        self.health = self.maxhealth
+        self.attack = 15
+        self.goldgain = 30
+Rouge = Rouge("Rouge Angel")
 
 def main():
     os.system('cls')
@@ -163,16 +172,20 @@ def equip():
         equip()
     else:
         print("You do not own this weapon.")
+        option = input("---> ")
+        equip()
 
 def prefight():
     global enemy
-    enemynum = random.randint(1, 3)
+    enemynum = random.randint(1, 4)
     if enemynum == 1:
         enemy = GoblinIG
     if enemynum == 2:
         enemy = SkeletonIG
-    else:
+    if enemynum == 3:
         enemy = Demon
+    else:
+        enemy = Rouge
     fight()
 
 
@@ -294,21 +307,25 @@ def store():
             print("You don't have enough gold for this item.")
             option = input("---> ")
             store()
+
     if option == "Health Potion":
         if PlayerIG.gold >= 40:
             os.system('cls')
             PlayerIG.gold -= 40
             PlayerIG.pots += 1
-            print("You have purchased a {0} !".format(option))
+            print("You have purchased a %s !" % option)
             option = input("---> ")
             store()
+        else:
+            os.system('cls')
+            print("You do not have enough gold for this item.")
 
     elif option == "Back":
         start1()
-
     else:
         os.system('cls')
         print("We don't have that item in stock at the moment!")
         option = input("---> ")
         store()
+
 main()

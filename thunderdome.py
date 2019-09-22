@@ -5,6 +5,8 @@ import random
 import pickle
 import socket
 
+#Created by turtlebias
+
 
 weapons = {"Great Sword":40, "Knight's Sword":100, "Demon Slayer":200, "Angel's Scythe":350, "Homing Bow":300}
 

@@ -311,3 +311,4 @@ def store():
         print("We don't have that item in stock at the moment!")
         option = input("---> ")
         store()
+main()

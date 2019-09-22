@@ -6,7 +6,7 @@ import pickle
 import socket
 
 
-weapons = {"Great Sword":40, "Knight's Sword":100}
+weapons = {"Great Sword":40, "Knight's Sword":100, "Demon Slayer":200}
 
 
 class Player:
@@ -160,17 +160,20 @@ def equip():
     print("b.) Back")
     option = input("---> ")
     if option == PlayerIG.curweap:
+        os.system('cls')
         print("Item is already equipped.")
         option = input("---> ")
         equip()
     elif option == "b":
         inventory()
     elif option in PlayerIG.weap:
+        os.system('cls')
         PlayerIG.curweap = option
         print("You have equipped: {0}".format(option))
         option = input("---> ")
         equip()
     else:
+        os.system('cls')
         print("You do not own this weapon.")
         option = input("---> ")
         equip()
@@ -287,6 +290,7 @@ def store():
     print("\nWhat would you like to buy?\n")
     print("1.) Great Sword")
     print("2.) Knight's Sword")
+    print("3.) Demon Slayer")
     print("\nPotions\n")
     print("1.) Health Potion")
     print("b.) Back")

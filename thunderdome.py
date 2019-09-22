@@ -287,7 +287,7 @@ def win():
     os.system('cls')
     enemy.health = enemy.maxhealth
     PlayerIG.gold += enemy.goldgain
-    print("You have defected the {0} !".format(enemy.name))
+    print("You have defeated the {0} !".format(enemy.name))
     print("You found {0} gold!".format(enemy.goldgain))
     option = input("---> ")
     start1()
